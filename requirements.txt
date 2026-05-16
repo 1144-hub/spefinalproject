@@ -64,3 +64,4 @@ python-dotenv               # Environment variable management
 # (--index-url pytorch.org). Do NOT add it here to avoid CUDA-heavy builds.
 protobuf>=4.0.0,<6.0.0      # chromadb 0.4+ requires protobuf>=4; cap at 6 for safety
 datasets>=2.20.0            # Required for evaluation and testing
+numpy<2                     # PyTorch 2.2.2 requires NumPy 1.x

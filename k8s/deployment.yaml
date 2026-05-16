@@ -41,6 +41,7 @@ spec:
       containers:
         - name: telecom-rag
           image: ssd31/telecom-rag:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 8501
               name: streamlit
@@ -68,7 +69,7 @@ spec:
             httpGet:
               path: /_stcore/health
               port: 8501
-            initialDelaySeconds: 120  # Increased for data ingestion
+            initialDelaySeconds: 300  # Increased for data ingestion
             periodSeconds: 10
             failureThreshold: 5       # Increased buffer
           # Liveness probe: K8s restarts the pod if it becomes unhealthy
@@ -76,7 +77,7 @@ spec:
             httpGet:
               path: /_stcore/health
               port: 8501
-            initialDelaySeconds: 180  # Increased for data ingestion + model load
+            initialDelaySeconds: 600  # Increased for data ingestion + model load
             periodSeconds: 20
             failureThreshold: 6       # Increased buffer
           volumeMounts:
