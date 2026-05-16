@@ -36,6 +36,7 @@ class TelecomDocumentParser:
             input_dir=self.data_dir,
             recursive=True,
             required_exts=['.md', '.pdf', '.json'],
+            exclude_hidden=False,
             file_extractor=file_extractor if file_extractor else None
         )
         documents = reader.load_data()

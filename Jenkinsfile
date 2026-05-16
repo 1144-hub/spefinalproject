@@ -20,6 +20,7 @@ pipeline {
     agent any
 
     environment {
+        PATH       = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
         DOCKER_HUB = credentials('dockerhub-creds')
         GROQ_KEY   = credentials('groq-api-key')
         IMAGE      = "${DOCKER_HUB_USR}/telecom-rag"
