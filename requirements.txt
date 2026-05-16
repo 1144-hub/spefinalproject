@@ -1,0 +1,66 @@
+# ============================================================================
+# NetRestore System - Python Dependencies
+# ============================================================================
+# This file lists all Python package dependencies for the NetRestore system.
+# Install with: pip install -r requirements.txt
+# Or with uv (faster): uv pip install -r requirements.txt
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# LlamaIndex Core - RAG Framework
+# ---------------------------------------------------------------------------
+llama-index
+llama-index-embeddings-huggingface
+llama-index-llms-ollama
+llama-index-llms-groq
+llama-index-vector-stores-qdrant
+llama-index-vector-stores-chroma
+
+# ---------------------------------------------------------------------------
+# Vector Database Clients
+# ---------------------------------------------------------------------------
+chromadb                    # Primary vector store for production
+qdrant-client               # Alternative vector store (optional)
+
+# ---------------------------------------------------------------------------
+# Retrieval & Reranking
+# ---------------------------------------------------------------------------
+rank-bm25                   # BM25 sparse retrieval for hybrid search
+sentence-transformers       # Cross-encoder reranking model
+
+# ---------------------------------------------------------------------------
+# LLM Integration
+# ---------------------------------------------------------------------------
+langchain-groq              # LangChain integration for Groq API
+langchain-huggingface       # LangChain integration for HuggingFace models
+
+# ---------------------------------------------------------------------------
+# Web Application & API
+# ---------------------------------------------------------------------------
+streamlit                   # Main web application UI
+fastapi                     # REST API framework (optional)
+uvicorn                     # ASGI server for FastAPI
+
+# ---------------------------------------------------------------------------
+# Document Processing
+# ---------------------------------------------------------------------------
+pypdf                       # PDF parsing for SOP documents
+
+# ---------------------------------------------------------------------------
+# Development & Testing
+# ---------------------------------------------------------------------------
+jupyterlab                  # Interactive development environment
+ragas                       # RAG evaluation metrics
+
+# ---------------------------------------------------------------------------
+# Utilities
+# ---------------------------------------------------------------------------
+python-dotenv               # Environment variable management
+
+# ---------------------------------------------------------------------------
+# Dependency Constraints
+# ---------------------------------------------------------------------------
+# Note: torchvision is installed via Dockerfile CPU-only wheel index
+# (--index-url pytorch.org). Do NOT add it here to avoid CUDA-heavy builds.
+protobuf>=4.0.0,<6.0.0      # chromadb 0.4+ requires protobuf>=4; cap at 6 for safety
+datasets>=2.20.0            # Required for evaluation and testing

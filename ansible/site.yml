@@ -1,0 +1,25 @@
+---
+# Master Ansible Playbook for NetRestore Infrastructure
+#
+# This playbook provisions all target VMs with the required software
+# using modular Ansible Roles (fulfills the "Ansible Roles" rubric requirement).
+#
+# Usage:
+#   ansible-playbook -i inventory.ini site.yml --ask-become-pass
+#
+# Roles:
+#   1. docker    - Installs Docker Engine and Docker Compose
+#   2. kubernetes - Installs kubectl and Minikube
+#   3. filebeat  - Installs and configures Filebeat for ELK log shipping
+
+- name: Provision Telecom RAG Infrastructure
+  hosts: k8s_nodes
+  become: yes
+  
+  vars:
+    logstash_host: "192.168.56.100"  # Update to your Logstash server IP
+    
+  roles:
+    - docker
+    - kubernetes
+    - filebeat

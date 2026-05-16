@@ -1,0 +1,21 @@
+# Kubernetes Service for NetRestore Application
+# Exposes the Streamlit app on NodePort 30501 for external access.
+# For cloud deployments, consider changing to type: LoadBalancer.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: telecom-rag-svc
+  namespace: telecom-rag
+  labels:
+    app: telecom-rag
+spec:
+  type: NodePort
+  selector:
+    app: telecom-rag
+  ports:
+    - name: streamlit
+      port: 8501
+      targetPort: 8501
+      nodePort: 30501
+      protocol: TCP

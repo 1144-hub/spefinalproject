@@ -1,0 +1,177 @@
+[
+  {
+    "query": "How to clear ALARM_CODE_404 on a Nokia router?",
+    "expected_vendor": "Nokia",
+    "expected_alarm_code": "404",
+    "expected_keywords": ["BGP", "authentication", "MD5", "Established"],
+    "reference_answer": "ALARM_CODE_404 is a BGP Peer Down caused by Authentication Failure on Nokia. Steps include: verify alarm status with show router bgp neighbor status, check logs for auth errors, validate MD5 key with peer, update key in configure mode, clear BGP session with clear router bgp protocol, verify state is Established."
+  },
+  {
+    "query": "What is the procedure for Interface Link Down on Nokia?",
+    "expected_vendor": "Nokia",
+    "expected_alarm_code": "501",
+    "expected_keywords": ["optical", "Rx", "SFP", "fiber", "dBm"],
+    "reference_answer": "ALARM_CODE_501 is an Interface Link Down due to Optical Rx Loss. Steps: check optical levels with show port 1/1/1 optical, physically inspect fiber, clean fiber ends, re-seat SFP module, replace SFP if needed, verify link is Up."
+  },
+  {
+    "query": "How to fix BGP peer down on Cisco IOS-XR?",
+    "expected_vendor": "Cisco",
+    "expected_alarm_code": "301",
+    "expected_keywords": ["BGP", "neighbor", "Cisco"],
+    "reference_answer": "The procedure involves verifying BGP peer state, checking system logs, validating configuration, clearing the BGP session, and confirming the peer reaches Established state."
+  },
+  {
+    "query": "Procedure for OSPF adjacency failure on Juniper?",
+    "expected_vendor": "Juniper",
+    "expected_alarm_code": null,
+    "expected_keywords": ["OSPF", "neighbor", "Juniper", "adjacency"],
+    "reference_answer": "Run show ospf neighbor to check state, verify interface configuration, clear OSPF process if needed, and confirm full adjacency is re-established."
+  },
+  {
+    "query": "How to troubleshoot Ericsson BGP flapping?",
+    "expected_vendor": "Ericsson",
+    "expected_alarm_code": null,
+    "expected_keywords": ["BGP", "Ericsson", "flapping"],
+    "reference_answer": "Check BGP summary, analyze event logs for recurring patterns, verify configuration, clear and re-establish the BGP session, and monitor for stability."
+  },
+  {
+    "query": "What should I do for ALARM_CODE_801 on Huawei?",
+    "expected_vendor": "Huawei",
+    "expected_alarm_code": "801",
+    "expected_keywords": ["Huawei", "alarm"],
+    "reference_answer": "Follow the Huawei SOP for alarm code 801, which involves acknowledging the alarm, running diagnostic commands, executing the restoration procedure, and validating the recovery."
+  },
+  {
+    "query": "How to handle optical Rx power loss on Cisco equipment?",
+    "expected_vendor": "Cisco",
+    "expected_alarm_code": null,
+    "expected_keywords": ["optical", "Rx", "power", "Cisco"],
+    "reference_answer": "Check optics with show controllers optics, inspect physical fiber and SFP, clean connectors, re-seat or replace SFP, verify Rx power returns to acceptable levels."
+  },
+  {
+    "query": "Procedure for MPLS LDP session down on Nokia?",
+    "expected_vendor": "Nokia",
+    "expected_alarm_code": null,
+    "expected_keywords": ["MPLS", "LDP", "Nokia", "session"],
+    "reference_answer": "Check LDP session status with show router ldp session, verify LDP bindings, clear the session if needed, and confirm the session returns to Established state."
+  },
+  {
+    "query": "How to restore LACP bundle on Juniper?",
+    "expected_vendor": "Juniper",
+    "expected_alarm_code": null,
+    "expected_keywords": ["LACP", "bundle", "Juniper", "ae0"],
+    "reference_answer": "Check LACP interfaces and statistics, verify aggregated ethernet interface ae0 status, clear LACP counters, reconfigure active mode if needed, and confirm physical links are up."
+  },
+  {
+    "query": "BFD session timeout on Ericsson router, how to fix?",
+    "expected_vendor": "Ericsson",
+    "expected_alarm_code": null,
+    "expected_keywords": ["BFD", "Ericsson", "session"],
+    "reference_answer": "Check BFD session status and detail, clear session discriminator, adjust BFD intervals if needed, and verify session returns to Up state."
+  },
+  {
+    "query": "VRRP failover procedure for Huawei?",
+    "expected_vendor": "Huawei",
+    "expected_alarm_code": null,
+    "expected_keywords": ["VRRP", "Huawei", "Master", "priority"],
+    "reference_answer": "Check VRRP status and statistics, verify priority settings, clear statistics, reconfigure VRRP virtual IP and priority, confirm the router transitions to Master state."
+  },
+  {
+    "query": "What is the escalation procedure for a Critical alarm on Nokia Core-1?",
+    "expected_vendor": "Nokia",
+    "expected_alarm_code": null,
+    "expected_keywords": ["Nokia", "Core", "Critical", "escalat"],
+    "reference_answer": "For Critical alarms on Nokia-Core-1 (a core router), note that failures cascade to connected Provider Edge routers Cisco-PE-1 and Juniper-PE-2. Escalate to Nokia TAC with alarm code and collected diagnostic outputs."
+  },
+  {
+    "query": "How to fix QoS scheduler hardware failure on Nokia?",
+    "expected_vendor": "Nokia",
+    "expected_alarm_code": null,
+    "expected_keywords": ["QoS", "Nokia"],
+    "reference_answer": "Check QoS policy and scheduler status, verify hardware module state, if hardware failure confirmed then initiate failover and dispatch technician for replacement."
+  },
+  {
+    "query": "Procedure for NTP sync failure on Cisco?",
+    "expected_vendor": "Cisco",
+    "expected_alarm_code": null,
+    "expected_keywords": ["NTP", "Cisco", "synchron"],
+    "reference_answer": "Check NTP status and associations, clear NTP drift, reconfigure preferred NTP server, verify clock synchronization."
+  },
+  {
+    "query": "How to handle EVPN MAC route issues on Nokia?",
+    "expected_vendor": "Nokia",
+    "expected_alarm_code": null,
+    "expected_keywords": ["EVPN", "MAC", "Nokia"],
+    "reference_answer": "Check EVPN service status and MAC table, clear MAC table entries, verify BGP EVPN routes, reconfigure if needed, and confirm active state."
+  },
+  {
+    "query": "IS-IS adjacency down on Cisco, what to do?",
+    "expected_vendor": "Cisco",
+    "expected_alarm_code": null,
+    "expected_keywords": ["IS-IS", "Cisco", "adjacency"],
+    "reference_answer": "Check IS-IS neighbors and database, verify topology, clear IS-IS process, reconfigure interface if needed, verify adjacency comes back up."
+  },
+  {
+    "query": "IPSec VPN tunnel failure on Juniper?",
+    "expected_vendor": "Juniper",
+    "expected_alarm_code": null,
+    "expected_keywords": ["IPSec", "VPN", "Juniper", "tunnel"],
+    "reference_answer": "Check IPSec and IKE SA status, review statistics, clear SA entries, re-establish the tunnel, verify active tunnel count."
+  },
+  {
+    "query": "Power supply failure on Ericsson router?",
+    "expected_vendor": "Ericsson",
+    "expected_alarm_code": null,
+    "expected_keywords": ["power", "Ericsson", "PSU"],
+    "reference_answer": "Check power shelf and environment status, verify redundancy, restart affected power module, dispatch technician if needed, confirm power status is OK."
+  },
+  {
+    "query": "How to clear FIB inconsistency on Cisco?",
+    "expected_vendor": "Cisco",
+    "expected_alarm_code": null,
+    "expected_keywords": ["FIB", "forwarding", "Cisco", "CEF"],
+    "reference_answer": "Check CEF IPv4 summary and inconsistency, clear CEF inconsistency, clear route-ha, verify FIB entries are resolved."
+  },
+  {
+    "query": "What happens if Nokia-Core-1 fails? Which nodes are affected?",
+    "expected_vendor": "Nokia",
+    "expected_alarm_code": null,
+    "expected_keywords": ["Nokia-Core-1", "cascade", "Cisco-PE-1", "Juniper-PE-2"],
+    "reference_answer": "Nokia-Core-1 is a Core router. Per cascade rules, its failure cascades to all connected Provider Edge nodes: Cisco-PE-1 and Juniper-PE-2."
+  },
+  {
+    "query": "GRE tunnel troubleshooting on Juniper?",
+    "expected_vendor": "Juniper",
+    "expected_alarm_code": null,
+    "expected_keywords": ["GRE", "tunnel", "Juniper"],
+    "reference_answer": "Check GRE interface status and routing table, clear interface statistics, verify tunnel source and destination configuration, confirm link is up."
+  },
+  {
+    "query": "DHCP relay failure on Huawei?",
+    "expected_vendor": "Huawei",
+    "expected_alarm_code": null,
+    "expected_keywords": ["DHCP", "relay", "Huawei"],
+    "reference_answer": "Check DHCP relay status and statistics, reset statistics, enable DHCP globally, configure relay server IP on the interface, verify received packet count."
+  },
+  {
+    "query": "How does a Provider Edge failure affect the network?",
+    "expected_vendor": null,
+    "expected_alarm_code": null,
+    "expected_keywords": ["Provider Edge", "Access Switch", "cascade"],
+    "reference_answer": "If a Provider Edge node fails, only the local Access Switches directly connected to it are affected. It does not cascade to other PE or Core nodes."
+  },
+  {
+    "query": "Multicast PIM neighbor loss on Juniper?",
+    "expected_vendor": "Juniper",
+    "expected_alarm_code": null,
+    "expected_keywords": ["PIM", "multicast", "Juniper", "neighbor"],
+    "reference_answer": "Check PIM neighbors and join state, verify multicast routes, clear PIM joins, reconfigure PIM sparse mode on interface, verify PIM neighbor is established."
+  },
+  {
+    "query": "SNMP agent resource exhaustion on Ericsson?",
+    "expected_vendor": "Ericsson",
+    "expected_alarm_code": null,
+    "expected_keywords": ["SNMP", "Ericsson", "resource"],
+    "reference_answer": "Check SNMP community and statistics, clear SNMP statistics, reconfigure read-only community, verify packet reception normalizes."
+  }
+]

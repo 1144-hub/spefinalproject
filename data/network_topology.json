@@ -1,0 +1,42 @@
+{
+  "network_topology": {
+    "region": "North America",
+    "nodes": [
+      {
+        "node_id": "Nokia-Core-1",
+        "role": "Core",
+        "vendor": "Nokia",
+        "connected_to": ["Cisco-PE-1", "Juniper-PE-2"]
+      },
+      {
+        "node_id": "Cisco-PE-1",
+        "role": "Provider Edge",
+        "vendor": "Cisco",
+        "connected_to": ["Nokia-Core-1", "Customer-Switch-A"]
+      },
+      {
+        "node_id": "Juniper-PE-2",
+        "role": "Provider Edge",
+        "vendor": "Juniper",
+        "connected_to": ["Nokia-Core-1", "Ericsson-Access-1"]
+      },
+      {
+        "node_id": "Huawei-Core-2",
+        "role": "Core",
+        "vendor": "Huawei",
+        "connected_to": ["Cisco-PE-1", "Juniper-PE-2"]
+      },
+      {
+        "node_id": "Ericsson-Access-1",
+        "role": "Access Switch",
+        "vendor": "Ericsson",
+        "connected_to": ["Juniper-PE-2"]
+      }
+    ],
+    "rules": [
+      "A failure in a Core node cascades to all connected Provider Edge nodes.",
+      "If a Provider Edge node fails, only the local Access Switches are affected.",
+      "If an Access Switch fails, no other network equipment is affected."
+    ]
+  }
+}

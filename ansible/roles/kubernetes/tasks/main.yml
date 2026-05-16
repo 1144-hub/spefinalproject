@@ -1,0 +1,48 @@
+---
+# Role: kubernetes
+# Purpose: Install kubectl and Minikube on Ubuntu VMs for local K8s cluster
+# For production, replace Minikube with kubeadm or a managed K8s service.
+
+- name: Download kubectl binary
+  get_url:
+    url: "https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl"
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
+    force: no
+
+- name: Verify kubectl installation
+  command: kubectl version --client  # --short was removed in kubectl v1.28+
+  register: kubectl_version
+  changed_when: false
+  ignore_errors: yes
+
+- name: Print kubectl version
+  debug:
+    msg: "kubectl installed: {{ kubectl_version.stdout | default('unknown') }}"
+
+- name: Download Minikube binary
+  get_url:
+    url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+    dest: /usr/local/bin/minikube
+    mode: '0755'
+    force: no
+
+- name: Check Minikube status
+  become: no
+  shell: minikube status --format='{{.Host}}'
+  register: minikube_status
+  changed_when: false
+  ignore_errors: yes
+
+- name: Start Minikube cluster (if not running)
+  become: no
+  shell: minikube start --driver=docker --cpus=2 --memory=4096
+  when: minikube_status.rc != 0 or 'Running' not in minikube_status.stdout
+  register: minikube_start
+  changed_when: "'Done' in minikube_start.stdout"
+
+- name: Enable metrics-server addon (required for HPA)
+  become: no
+  shell: minikube addons enable metrics-server
+  changed_when: false
+  ignore_errors: yes

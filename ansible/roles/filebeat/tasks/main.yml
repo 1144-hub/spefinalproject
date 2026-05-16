@@ -1,0 +1,31 @@
+---
+# Role: filebeat
+# Purpose: Install and configure Filebeat for shipping container logs to ELK stack
+# Filebeat reads Docker container logs and forwards them to Logstash for processing.
+
+- name: Download and install Filebeat
+  apt:
+    deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.12.0-amd64.deb
+    state: present
+
+- name: Deploy Filebeat configuration from template
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+    mode: '0644'
+    owner: root
+    group: root
+  notify: restart filebeat
+
+- name: Enable Filebeat Docker module
+  command: filebeat modules enable docker
+  changed_when: false
+  ignore_errors: yes
+
+- name: Ensure Filebeat service is running and enabled
+  systemd:
+    name: filebeat
+    state: started
+    enabled: yes
+
+

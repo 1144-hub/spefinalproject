@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  netrestore:
+    build: .
+    image: ${DOCKER_USER:-local}/netrestore:${TAG:-latest}
+    ports:
+      - "8501:8501"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    volumes:
+      # Named volume persists chroma_db across container restarts
+      - ./chroma_db:/app/chroma_db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    # Resource limits — top-level keys work in standalone `docker compose up`.
+    # (deploy.resources is Swarm-only and silently ignored without `docker stack deploy`.)
+    mem_limit: 4g
+    memswap_limit: 4g
+    cpus: "2.0"
+
+# No separate named volume needed — chroma_db is a bind-mount (./chroma_db:/app/chroma_db)
+# which persists data in the host directory automatically.

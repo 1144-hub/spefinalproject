@@ -1,0 +1,45 @@
+# Horizontal Pod Autoscaler for NetRestore
+#
+# Automatically scales pods between 1 and 5 replicas based on CPU utilization.
+# When CPU exceeds 70% (e.g., multiple engineers querying during an outage),
+# K8s will spin up additional pods to handle the load.
+#
+# Prerequisites:
+#   - metrics-server must be running in the cluster
+#   - Minikube: `minikube addons enable metrics-server`
+#   - Cloud: Usually pre-installed on GKE/EKS/AKS
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: telecom-rag-hpa
+  namespace: telecom-rag
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: telecom-rag
+  minReplicas: 1   # Matches deployment baseline; RWO PVC limits to single-writer pod
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+  behavior:
+    # Prevent rapid scale-down (flapping) by requiring 2 minutes of low usage
+    scaleDown:
+      stabilizationWindowSeconds: 120
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 60
+    # Allow faster scale-up for bursty outage scenarios
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+        - type: Pods
+          value: 2
+          periodSeconds: 60

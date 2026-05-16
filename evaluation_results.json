@@ -1,0 +1,10 @@
+{
+  "retrieval": {
+    "vendor_hit_rate": 1.0,
+    "keyword_hit_rate": 0.9186046511627907,
+    "mrr": 0.96,
+    "total_queries": 25
+  },
+  "generation": {},
+  "num_qa_pairs": 25
+}

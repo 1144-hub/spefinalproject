@@ -1,0 +1,124 @@
+# Kubernetes Deployment for NetRestore Application
+#
+# Key design decisions:
+# - RollingUpdate with maxUnavailable=0 ensures zero-downtime deployments (Live Patching)
+# - Readiness/liveness probes prevent traffic routing to unhealthy pods
+# - Vault annotations enable automatic secret injection via sidecar
+# - PVC mount ensures ChromaDB data survives pod restarts
+#
+# Replace YOUR_DOCKERHUB_USER with your actual Docker Hub username.
+#
+# Secret prerequisite — run once before applying this manifest:
+#   kubectl create secret generic telecom-rag-secret \
+#     --from-literal=groq-api-key='YOUR_GROQ_KEY' \
+#     -n telecom-rag
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telecom-rag
+  namespace: telecom-rag
+  labels:
+    app: telecom-rag
+spec:
+  replicas: 1   # ChromaDB (embedded RWO PVC) only supports single-writer; HPA handles scale-out
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0       # Never take all pods down — zero-downtime
+      maxSurge: 1             # Spin up 1 new pod before killing the old one
+  selector:
+    matchLabels:
+      app: telecom-rag
+  template:
+    metadata:
+      labels:
+        app: telecom-rag
+      # HashiCorp Vault Agent Injector annotations
+      # These tell the Vault sidecar to inject the GROQ_API_KEY into the pod
+      annotations: {}
+    spec:
+      containers:
+        - name: telecom-rag
+          image: ssd31/telecom-rag:latest
+          ports:
+            - containerPort: 8501
+              name: streamlit
+          env:
+            - name: GROQ_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: telecom-rag-secret
+                  key: groq-api-key
+            # FORCE_DB_REBUILD is intentionally omitted here.
+            # To trigger a one-off rebuild, run:
+            #   kubectl set env deployment/telecom-rag FORCE_DB_REBUILD=true -n telecom-rag
+            # Then clear it after rebuild:
+            #   kubectl set env deployment/telecom-rag FORCE_DB_REBUILD- -n telecom-rag
+          # Resource requests/limits for HPA CPU-based scaling
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 2Gi
+          # Readiness probe: K8s won't send traffic until the pod is ready
+          readinessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: 8501
+            initialDelaySeconds: 120  # Increased for data ingestion
+            periodSeconds: 10
+            failureThreshold: 5       # Increased buffer
+          # Liveness probe: K8s restarts the pod if it becomes unhealthy
+          livenessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: 8501
+            initialDelaySeconds: 180  # Increased for data ingestion + model load
+            periodSeconds: 20
+            failureThreshold: 6       # Increased buffer
+          volumeMounts:
+            - name: chroma-storage
+              mountPath: /app/chroma_db
+            - name: model-storage
+              mountPath: /app/.cache/huggingface
+      # Ensure non-root appuser (UID 1000) can write to the mounted volumes
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: chroma-storage
+          persistentVolumeClaim:
+            claimName: chroma-pvc
+        - name: model-storage
+          persistentVolumeClaim:
+            claimName: model-pvc
+---
+# PersistentVolumeClaim for ChromaDB data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: chroma-pvc
+  namespace: telecom-rag
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+# PersistentVolumeClaim for AI Model weights
+# Decoupling models from the image allows for much smaller container images
+# and faster CI/CD pipelines.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-pvc
+  namespace: telecom-rag
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
